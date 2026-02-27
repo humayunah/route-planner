@@ -1,8 +1,10 @@
 __pycache__/
 *.py[cod]
 db.sqlite3
+db.sqlite3-journal
 .uv/
 .venv/
 *.egg-info/
 geocode_cache.json
 .ruff_cache/
+.claude/

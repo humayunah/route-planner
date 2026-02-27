@@ -1,17 +1,18 @@
 from __future__ import annotations
 
 import math
+import typing
 
 from django.db import models
 
 
 def haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     """Great-circle distance in miles between two (lat, lon) points."""
-    R = 3959  # Earth radius in miles
+    earth_radius = 3959  # miles
     lat1, lon1, lat2, lon2 = map(math.radians, (lat1, lon1, lat2, lon2))
     dlat, dlon = lat2 - lat1, lon2 - lon1
     a = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
-    return R * 2 * math.asin(math.sqrt(a))
+    return earth_radius * 2 * math.asin(math.sqrt(a))
 
 
 class FuelStationQuerySet(models.QuerySet):
@@ -140,7 +141,7 @@ class FuelStation(models.Model):
     objects = FuelStationManager()
 
     class Meta:
-        indexes = [models.Index(fields=["state", "city"])]
+        indexes: typing.ClassVar = [models.Index(fields=["state", "city"])]
 
     def __str__(self) -> str:
         return f"{self.name} ({self.city}, {self.state}) - ${self.retail_price:.3f}"
