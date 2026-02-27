@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+db.sqlite3
+.uv/
+.venv/
+*.egg-info/
+geocode_cache.json
+.ruff_cache/

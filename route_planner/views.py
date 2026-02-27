@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import requests as http_requests
 from django.conf import settings
 from rest_framework import status
 from rest_framework.request import Request
@@ -21,10 +22,14 @@ class RouteView(APIView):
             finish_coords = geocode(ser.validated_data["finish"])
         except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except http_requests.RequestException:
+            return Response(
+                {"error": "Geocoding service unavailable"}, status=status.HTTP_502_BAD_GATEWAY
+            )
 
         try:
             route = get_route(start_coords, finish_coords)
-        except ValueError as e:
+        except (ValueError, http_requests.RequestException) as e:
             return Response({"error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
 
         stations_near = FuelStation.objects.near_route(
