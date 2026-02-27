@@ -24,7 +24,7 @@ line-length = 99
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "UP", "B", "SIM", "RUF"]
 
-[tool.ty]
+[tool.ty.environment]
 python-version = "3.12"
 
 [tool.ty.rules]

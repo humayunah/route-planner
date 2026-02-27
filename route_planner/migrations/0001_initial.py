@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = []
@@ -34,9 +33,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 "indexes": [
-                    models.Index(
-                        fields=["state", "city"], name="route_plann_state_30d23f_idx"
-                    )
+                    models.Index(fields=["state", "city"], name="route_plann_state_30d23f_idx")
                 ],
             },
         ),

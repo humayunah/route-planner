@@ -22,9 +22,7 @@ def geocode(place: str) -> tuple[float, float]:
     return float(results[0]["lat"]), float(results[0]["lon"])
 
 
-def get_route(
-    start: tuple[float, float], finish: tuple[float, float]
-) -> dict:
+def get_route(start: tuple[float, float], finish: tuple[float, float]) -> dict:
     """
     Fetch driving route from OSRM.
     Returns {distance_miles, duration_seconds, geometry: [(lat, lon)...], sampled_points: [(lat, lon, cum_miles)...]}.

@@ -12,11 +12,56 @@ from django.core.management.base import BaseCommand
 from route_planner.models import FuelStation
 
 US_STATES = {
-    "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
-    "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-    "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-    "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-    "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY",
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DE",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
     "DC",
 }
 
@@ -82,8 +127,7 @@ class Command(BaseCommand):
         to_geocode = {(c, s) for c, s in unique_cities if f"{c},{s}" not in cache}
 
         self.stdout.write(
-            f"{ungeo.count()} ungeocoded stations, "
-            f"{len(to_geocode)} unique cities to geocode"
+            f"{ungeo.count()} ungeocoded stations, {len(to_geocode)} unique cities to geocode"
         )
 
         for city, state in to_geocode:
