@@ -1,3 +1,7 @@
 from django.urls import path
 
-urlpatterns = []
+from .views import RouteView
+
+urlpatterns = [
+    path("route/", RouteView.as_view(), name="route"),
+]
