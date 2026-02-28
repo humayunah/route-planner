@@ -102,11 +102,11 @@ Final coverage: 6,599 of 6,626 unique stations (99.6%) have coordinates.
 
 ## Architecture
 
-The project follows a **fat models / thin views** pattern:
+Domain logic lives in the model layer, keeping views minimal and business rules testable without HTTP concerns:
 
-- **`FuelStation` model + `FuelStationManager`** -- contains all domain logic: bounding-box queries, haversine proximity filtering, and the greedy fuel stop optimizer. This keeps the business logic testable without HTTP concerns.
-- **`routing.py`** -- thin utility module that wraps two external APIs (Nominatim geocoding and OSRM routing). Handles coordinate conversion, polyline decoding, and route sampling at configurable intervals.
-- **`RouteView`** -- thin orchestrator that validates input, calls the utilities, delegates to the manager, and serializes the output. No business logic lives here.
+- **`FuelStation` model + `FuelStationManager`** -- handles bounding-box queries, haversine proximity filtering, and the greedy fuel stop optimizer.
+- **`routing.py`** -- utility module wrapping two external APIs (Nominatim geocoding and OSRM routing). Handles coordinate conversion, polyline decoding, and route sampling.
+- **`RouteView`** -- validates input, calls the utilities, delegates to the manager, and serializes the output.
 
 **Per-request flow (3 external API calls):**
 
