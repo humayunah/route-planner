@@ -11,7 +11,10 @@
       "Bash(git commit:*)",
       "Bash(uv run ruff check:*)",
       "Bash(uv run ruff format:*)",
-      "Bash(uv run:*)"
+      "Bash(uv run:*)",
+      "Bash(DJANGO_SETTINGS_MODULE=config.settings uv run python:*)",
+      "Bash(uv add:*)",
+      "Bash(curl:*)"
     ]
   }
 }

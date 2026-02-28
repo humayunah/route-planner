@@ -79,7 +79,10 @@ class FuelStationManager(models.Manager):
         mpg: float = 10,
     ) -> tuple[list[dict], float, float]:
         """
-        Greedy cheapest-first fuel stop selection.
+        Greedy cheapest-first fuel stop selection with minimum spacing.
+
+        Picks the cheapest station in the second half of the tank's range,
+        ensuring stops are well-spaced (~250-500 miles apart).
 
         Returns (stop_details, total_cost, total_gallons).
         Each stop_detail: {station, miles_from_start, gallons, cost}.
@@ -89,14 +92,27 @@ class FuelStationManager(models.Manager):
 
         stops: list[tuple[FuelStation, float]] = []
         current_pos = 0.0
+        min_spacing = max_range * 0.5  # don't stop until at least half-tank used
 
         while current_pos + max_range < total_distance:
-            reachable = [
-                (s, d) for s, d in sorted_stations if current_pos < d <= current_pos + max_range
+            # Prefer stations in the far half of range (well-spaced stops)
+            far_candidates = [
+                (s, d)
+                for s, d in sorted_stations
+                if current_pos + min_spacing <= d <= current_pos + max_range
             ]
-            if not reachable:
-                break
-            best = min(reachable, key=lambda x: x[0].retail_price)
+            if far_candidates:
+                best = min(far_candidates, key=lambda x: x[0].retail_price)
+            else:
+                # Fallback: any reachable station
+                reachable = [
+                    (s, d)
+                    for s, d in sorted_stations
+                    if current_pos < d <= current_pos + max_range
+                ]
+                if not reachable:
+                    break
+                best = min(reachable, key=lambda x: x[0].retail_price)
             stops.append(best)
             current_pos = best[1]
 
