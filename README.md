@@ -5,7 +5,7 @@ A Django REST API that calculates the optimal fuel stops for a truck driving bet
 ## Quick Start
 
 ```bash
-git clone <repo-url> && cd spotter-assessment
+git clone <repo-url> && cd route-planner
 
 # Install dependencies (requires uv)
 uv sync
@@ -104,7 +104,8 @@ Final coverage: 6,599 of 6,626 unique stations (99.6%) have coordinates.
 
 Domain logic lives in the model layer, keeping views minimal and business rules testable without HTTP concerns:
 
-- **`FuelStation` model + `FuelStationManager`** -- handles bounding-box queries, haversine proximity filtering, and the greedy fuel stop optimizer.
+- **`managers.py`** -- `FuelStationManager` and `FuelStationQuerySet` handle bounding-box queries, haversine proximity filtering, and the greedy fuel stop optimizer.
+- **`models.py`** -- `FuelStation` model definition.
 - **`routing.py`** -- utility module wrapping two external APIs (Nominatim geocoding and OSRM routing). Handles coordinate conversion, polyline decoding, and route sampling.
 - **`RouteView`** -- validates input, calls the utilities, delegates to the manager, and serializes the output.
 
@@ -168,7 +169,7 @@ uv run pytest -v
 
 38 tests across three modules:
 
-- **`test_models.py`** (18 tests) -- haversine distance calculations, manager queries (`near_route`, `find_optimal_stops`), queryset filters, edge cases (ungeocoded stations, empty inputs, spacing constraints)
+- **`test_managers.py`** (18 tests) -- haversine distance calculations, manager queries (`near_route`, `find_optimal_stops`), queryset filters, edge cases (ungeocoded stations, empty inputs, spacing constraints)
 - **`test_routing.py`** (12 tests) -- geocoding success/failure, OSRM integration, polyline sampling, boundary conditions (empty routes, close points, monotonic distances)
 - **`test_views.py`** (8 tests) -- full request/response cycle, input validation, error handling (bad geocode, network failures, missing fields, wrong HTTP method), response structure verification
 
@@ -185,12 +186,13 @@ uv run ty check          # type check
 ## Project Structure
 
 ```
-spotter-assessment/
+route-planner/
   config/
     settings.py          # Django settings + route planner config
     urls.py              # Root URL config
   route_planner/
-    models.py            # FuelStation model, manager, haversine
+    managers.py          # FuelStationManager, queryset, haversine
+    models.py            # FuelStation model
     routing.py           # Nominatim + OSRM API wrappers
     views.py             # RouteView (thin orchestrator)
     serializers.py       # Request/response serializers
@@ -200,7 +202,7 @@ spotter-assessment/
         load_fuel_stations.py  # CSV import + geocoding pipeline
     tests/
       conftest.py        # Shared fixtures
-      test_models.py     # Model + manager tests
+      test_managers.py   # Manager, queryset, haversine tests
       test_routing.py    # Routing utility tests
       test_views.py      # API integration tests
   pyproject.toml         # Dependencies, tool config
