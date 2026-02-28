@@ -62,10 +62,13 @@ class FuelStationManager(models.Manager):
 
         results = []
         for station in candidates:
+            slat, slon = station.latitude, station.longitude
             best_dist = float("inf")
             best_route_mi = 0.0
             for lat, lon, cum_mi in route_points:
-                d = haversine(station.latitude, station.longitude, lat, lon)
+                if abs(slat - lat) > buffer_deg or abs(slon - lon) > buffer_deg:
+                    continue
+                d = haversine(slat, slon, lat, lon)
                 if d < best_dist:
                     best_dist = d
                     best_route_mi = cum_mi

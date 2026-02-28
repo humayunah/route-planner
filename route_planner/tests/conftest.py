@@ -1,6 +1,13 @@
 import pytest
+from django.core.cache import cache as django_cache
 
 from route_planner.models import FuelStation
+
+
+@pytest.fixture(autouse=True)
+def _clear_cache():
+    """Prevent geocode cache from leaking between tests."""
+    django_cache.clear()
 
 
 @pytest.fixture

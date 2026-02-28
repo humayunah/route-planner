@@ -3,12 +3,18 @@ from __future__ import annotations
 import polyline as polyline_lib
 import requests
 from django.conf import settings
+from django.core.cache import cache
 
 from .managers import haversine
 
 
 def geocode(place: str) -> tuple[float, float]:
-    """Geocode a place name to (lat, lon) via Nominatim."""
+    """Geocode a place name to (lat, lon) via Nominatim, with caching."""
+    cache_key = "geocode_" + place.lower().strip().replace(" ", "_").replace(",", "")
+    cached = cache.get(cache_key)
+    if cached is not None:
+        return cached
+
     resp = requests.get(
         f"{settings.NOMINATIM_BASE_URL}/search",
         params={"q": place, "format": "json", "limit": 1, "countrycodes": "us"},
@@ -19,7 +25,9 @@ def geocode(place: str) -> tuple[float, float]:
     results = resp.json()
     if not results:
         raise ValueError(f"Could not geocode: {place}")
-    return float(results[0]["lat"]), float(results[0]["lon"])
+    coords = float(results[0]["lat"]), float(results[0]["lon"])
+    cache.set(cache_key, coords, timeout=86400)  # 24 hours
+    return coords
 
 
 def get_route(start: tuple[float, float], finish: tuple[float, float]) -> dict:
