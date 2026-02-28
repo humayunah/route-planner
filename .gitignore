@@ -7,4 +7,6 @@ db.sqlite3-journal
 *.egg-info/
 geocode_cache.json
 .ruff_cache/
+.pytest_cache/
 .claude/
+docs/plans/
