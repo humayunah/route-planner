@@ -81,7 +81,7 @@ class TestRouteView:
         mock_get.side_effect = side_effect
 
         response = api_client.post(
-            "/api/route/",
+            "/api/v1/route/",
             {"start": "New York, NY", "finish": "Pittsburgh, PA"},
             format="json",
         )
@@ -94,7 +94,7 @@ class TestRouteView:
         assert isinstance(data["fuel_stops"], list)
 
     def test_route_missing_fields(self, api_client):
-        response = api_client.post("/api/route/", {}, format="json")
+        response = api_client.post("/api/v1/route/", {}, format="json")
         assert response.status_code == 400
 
     @patch("route_planner.routing.requests.get")
@@ -105,7 +105,7 @@ class TestRouteView:
         )
         mock_get.return_value.raise_for_status = MagicMock()
         response = api_client.post(
-            "/api/route/",
+            "/api/v1/route/",
             {"start": "ZZZZZ", "finish": "YYYYY"},
             format="json",
         )
@@ -114,12 +114,12 @@ class TestRouteView:
 
 class TestRouteViewEdgeCases:
     def test_route_get_method_not_allowed(self, api_client):
-        response = api_client.get("/api/route/")
+        response = api_client.get("/api/v1/route/")
         assert response.status_code == 405
 
     def test_route_partial_fields(self, api_client):
         """Only start, missing finish."""
-        response = api_client.post("/api/route/", {"start": "NYC"}, format="json")
+        response = api_client.post("/api/v1/route/", {"start": "NYC"}, format="json")
         assert response.status_code == 400
 
     @patch("route_planner.routing.requests.get")
@@ -128,7 +128,7 @@ class TestRouteViewEdgeCases:
         mock_get.return_value = MagicMock(status_code=200, json=lambda: [])
         mock_get.return_value.raise_for_status = MagicMock()
         response = api_client.post(
-            "/api/route/",
+            "/api/v1/route/",
             {"start": "", "finish": ""},
             format="json",
         )
@@ -142,7 +142,7 @@ class TestRouteViewEdgeCases:
 
         mock_get.side_effect = req.ConnectionError("Network unreachable")
         response = api_client.post(
-            "/api/route/",
+            "/api/v1/route/",
             {"start": "NYC", "finish": "LA"},
             format="json",
         )
@@ -170,7 +170,7 @@ class TestRouteViewEdgeCases:
         mock_get.side_effect = side_effect
 
         response = api_client.post(
-            "/api/route/",
+            "/api/v1/route/",
             {"start": "New York, NY", "finish": "Pittsburgh, PA"},
             format="json",
         )

@@ -20,7 +20,7 @@
           "raw": "{\n  \"start\": \"New York, NY\",\n  \"finish\": \"Los Angeles, CA\"\n}"
         },
         "url": {
-          "raw": "http://localhost:8000/api/route/",
+          "raw": "http://localhost:8000/api/v1/route/",
           "protocol": "http",
           "host": ["localhost"],
           "port": "8000",
@@ -43,7 +43,7 @@
           "raw": "{\n  \"start\": \"Chicago, IL\",\n  \"finish\": \"Houston, TX\"\n}"
         },
         "url": {
-          "raw": "http://localhost:8000/api/route/",
+          "raw": "http://localhost:8000/api/v1/route/",
           "protocol": "http",
           "host": ["localhost"],
           "port": "8000",
@@ -66,7 +66,7 @@
           "raw": "{\n  \"start\": \"Boston, MA\",\n  \"finish\": \"Washington, DC\"\n}"
         },
         "url": {
-          "raw": "http://localhost:8000/api/route/",
+          "raw": "http://localhost:8000/api/v1/route/",
           "protocol": "http",
           "host": ["localhost"],
           "port": "8000",
@@ -89,7 +89,7 @@
           "raw": "{}"
         },
         "url": {
-          "raw": "http://localhost:8000/api/route/",
+          "raw": "http://localhost:8000/api/v1/route/",
           "protocol": "http",
           "host": ["localhost"],
           "port": "8000",
@@ -112,7 +112,7 @@
           "raw": "{\n  \"start\": \"ZZZZZZZZ\",\n  \"finish\": \"YYYYYYYY\"\n}"
         },
         "url": {
-          "raw": "http://localhost:8000/api/route/",
+          "raw": "http://localhost:8000/api/v1/route/",
           "protocol": "http",
           "host": ["localhost"],
           "port": "8000",

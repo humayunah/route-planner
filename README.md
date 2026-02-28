@@ -29,7 +29,7 @@ Final coverage: 6,624 of 6,626 unique stations (99.97%) have coordinates.
 
 ## API Reference
 
-### POST /api/route/
+### POST /api/v1/route/
 
 **Request:**
 
@@ -196,7 +196,7 @@ route-planner/
     routing.py           # Nominatim + OSRM API wrappers
     views.py             # RouteView (thin orchestrator)
     serializers.py       # Request/response serializers
-    urls.py              # /api/route/ endpoint
+    urls.py              # /api/v1/route/ endpoint
     management/
       commands/
         load_fuel_stations.py  # CSV import + geocoding pipeline
