@@ -110,3 +110,83 @@ class TestRouteView:
             format="json",
         )
         assert response.status_code == 400
+
+
+class TestRouteViewEdgeCases:
+    def test_route_get_method_not_allowed(self, api_client):
+        response = api_client.get("/api/route/")
+        assert response.status_code == 405
+
+    def test_route_partial_fields(self, api_client):
+        """Only start, missing finish."""
+        response = api_client.post("/api/route/", {"start": "NYC"}, format="json")
+        assert response.status_code == 400
+
+    @patch("route_planner.routing.requests.get")
+    def test_route_empty_string_inputs(self, mock_get, api_client):
+        """Empty strings should fail validation or geocoding."""
+        mock_get.return_value = MagicMock(status_code=200, json=lambda: [])
+        mock_get.return_value.raise_for_status = MagicMock()
+        response = api_client.post(
+            "/api/route/",
+            {"start": "", "finish": ""},
+            format="json",
+        )
+        # DRF CharField rejects empty strings by default
+        assert response.status_code == 400
+
+    @patch("route_planner.routing.requests.get")
+    def test_route_network_error(self, mock_get, api_client):
+        """Network failure should return 502."""
+        import requests as req
+
+        mock_get.side_effect = req.ConnectionError("Network unreachable")
+        response = api_client.post(
+            "/api/route/",
+            {"start": "NYC", "finish": "LA"},
+            format="json",
+        )
+        assert response.status_code == 502
+
+    @patch("route_planner.routing.requests.get")
+    def test_route_response_structure(self, mock_get, api_client, stations_along_route):
+        """Verify all expected fields are present in successful response."""
+        call_count = {"n": 0}
+
+        def side_effect(*args, **kwargs):
+            url = args[0] if args else kwargs.get("url", "")
+            if "nominatim" in url:
+                resp = MagicMock(status_code=200)
+                resp.json.return_value = MOCK_NOMINATIM_RESPONSES[min(call_count["n"], 1)]
+                resp.raise_for_status = MagicMock()
+                call_count["n"] += 1
+                return resp
+            else:
+                resp = MagicMock(status_code=200)
+                resp.json.return_value = MOCK_OSRM_RESPONSE
+                resp.raise_for_status = MagicMock()
+                return resp
+
+        mock_get.side_effect = side_effect
+
+        response = api_client.post(
+            "/api/route/",
+            {"start": "New York, NY", "finish": "Pittsburgh, PA"},
+            format="json",
+        )
+        assert response.status_code == 200
+        data = response.json()
+        required_keys = {
+            "start",
+            "finish",
+            "total_distance_miles",
+            "total_duration_hours",
+            "total_fuel_gallons",
+            "total_fuel_cost",
+            "fuel_stops",
+            "route_geometry",
+        }
+        assert required_keys.issubset(data.keys())
+        assert isinstance(data["total_distance_miles"], float)
+        assert isinstance(data["total_duration_hours"], float)
+        assert data["total_distance_miles"] > 0
