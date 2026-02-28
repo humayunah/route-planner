@@ -24,7 +24,7 @@
           "protocol": "http",
           "host": ["localhost"],
           "port": "8000",
-          "path": ["api", "route", ""]
+          "path": ["api", "v1", "route", ""]
         }
       }
     },
@@ -47,7 +47,7 @@
           "protocol": "http",
           "host": ["localhost"],
           "port": "8000",
-          "path": ["api", "route", ""]
+          "path": ["api", "v1", "route", ""]
         }
       }
     },
@@ -70,7 +70,7 @@
           "protocol": "http",
           "host": ["localhost"],
           "port": "8000",
-          "path": ["api", "route", ""]
+          "path": ["api", "v1", "route", ""]
         }
       }
     },
@@ -93,7 +93,7 @@
           "protocol": "http",
           "host": ["localhost"],
           "port": "8000",
-          "path": ["api", "route", ""]
+          "path": ["api", "v1", "route", ""]
         }
       }
     },
@@ -116,7 +116,7 @@
           "protocol": "http",
           "host": ["localhost"],
           "port": "8000",
-          "path": ["api", "route", ""]
+          "path": ["api", "v1", "route", ""]
         }
       }
     }
