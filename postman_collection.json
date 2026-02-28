@@ -1,0 +1,124 @@
+{
+  "info": {
+    "name": "Spotter Fuel Route Optimizer",
+    "description": "API for finding optimal fuel stops along a US driving route",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Route: New York to Los Angeles (cross-country)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"start\": \"New York, NY\",\n  \"finish\": \"Los Angeles, CA\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/route/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "route", ""]
+        }
+      }
+    },
+    {
+      "name": "Route: Chicago to Houston (medium)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"start\": \"Chicago, IL\",\n  \"finish\": \"Houston, TX\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/route/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "route", ""]
+        }
+      }
+    },
+    {
+      "name": "Route: Boston to Washington DC (short, no stops)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"start\": \"Boston, MA\",\n  \"finish\": \"Washington, DC\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/route/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "route", ""]
+        }
+      }
+    },
+    {
+      "name": "Error: Missing fields",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/route/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "route", ""]
+        }
+      }
+    },
+    {
+      "name": "Error: Invalid location",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"start\": \"ZZZZZZZZ\",\n  \"finish\": \"YYYYYYYY\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/route/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "route", ""]
+        }
+      }
+    }
+  ]
+}
