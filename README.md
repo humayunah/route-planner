@@ -13,7 +13,7 @@ uv sync
 # Create the database
 uv run python manage.py migrate
 
-# Load and geocode fuel stations (~1 min first run)
+# Load and geocode fuel stations (~8 min first run, ~1 sec thereafter)
 uv run python manage.py load_fuel_stations
 
 # Start the server
@@ -25,7 +25,7 @@ The `load_fuel_stations` command processes the CSV in two phases:
 1. **Local geocoding** -- resolves ~89% of station cities instantly via `geonamescache` (bundled offline data, no network calls).
 2. **Nominatim fallback** -- geocodes the remaining ~11% via the free OpenStreetMap API at 1 req/sec. Results are cached to `geocode_cache.json` so subsequent runs are instant.
 
-Final coverage: 6,599 of 6,626 unique stations (99.6%) have coordinates.
+Final coverage: 6,624 of 6,626 unique stations (99.97%) have coordinates.
 
 ## API Reference
 
@@ -148,7 +148,7 @@ The `load_fuel_stations` management command processes the provided CSV:
 4. **Geocode (local)** -- matches city/state against `geonamescache` bundled data -> resolves ~89%
 5. **Geocode (remote)** -- falls back to Nominatim for unmatched cities -> resolves ~11% more
 6. **Cache** -- writes `geocode_cache.json` so re-runs skip all network calls
-7. **Result** -- 6,599/6,626 stations have coordinates (99.6% coverage)
+7. **Result** -- 6,624/6,626 stations have coordinates (99.97% coverage)
 
 ## Vehicle Assumptions
 
