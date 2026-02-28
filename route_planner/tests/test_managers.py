@@ -1,4 +1,5 @@
-from route_planner.models import FuelStation, haversine
+from route_planner.managers import haversine
+from route_planner.models import FuelStation
 
 
 class TestHaversine:

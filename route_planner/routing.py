@@ -4,7 +4,7 @@ import polyline as polyline_lib
 import requests
 from django.conf import settings
 
-from .models import haversine
+from .managers import haversine
 
 
 def geocode(place: str) -> tuple[float, float]:
